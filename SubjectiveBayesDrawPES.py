@@ -1,0 +1,45 @@
+# 0.8 0.4 2 0.5
+import matplotlib.pyplot as plt
+print("="*40)
+print('不确定性推理:主观贝叶斯')
+print('E:前提,H:结论,C(E/S):可信度')
+print("="*40)
+print('定义域:')
+print('\t{-5 <= C(E/S) <= 5}')
+print('\t{0 <= P(H),P(E) <= 1}')
+print('\t{LS,LN >= 0 LS,LN位于1两侧}')
+print("="*40)
+PH = float(input('请输入先验概率P(H):'))
+PE = float(input('请输入先验概率P(E):'))
+LS = float(input('请输入充分性度量LS:'))
+LN = float(input('请输入必要性度量LN:'))
+
+PES_SET = []
+PHS_SET = []
+i = 0
+while i <= 1:
+    PES_SET.append(i)
+    i += 0.01
+
+for PES in PES_SET:
+    PEH = LS * (1 - LN) / (LS - LN)
+    P_EH = 1 - PEH
+    PH_E = P_EH * PH / (1 - PE)
+    if PH_E > 1:
+        PH_E = 1
+
+    PHE = PEH * PH / PE
+    if PHE > 1:
+        PHE = 1
+
+    if PES <= PE:
+        PHS_SET.append(PH_E + (PH - PH_E) * PES / PE)
+    else:
+        PHS_SET.append(PH + (PHE - PH) * (PES - PE) / (1 - PE))
+
+plt.rcParams['font.sans-serif'] = ['SimHei']
+plt.rcParams['axes.unicode_minus'] = False
+plt.title('P(H/S)-P(E/S)')
+plt.plot(PES_SET, PHS_SET)
+plt.plot(PE, PH, 'or')
+plt.show()
