@@ -1,75 +1,119 @@
 \documentclass{article}
 \pagestyle{plain}
 \usepackage{ctex, enumerate, multirow, graphicx, pythonhighlight}
-
 \begin{document}
 \tableofcontents
 \newpage
 
+\newpage
 \section{软件说明}
 
-
-
 \subsection{软件功能}
+% Python版本，需要的第3方包或其他的集成环境等等。
+% 这里只需列出需要的资源的名称和版本，并不需要提供软件本身。对于需要单独下载的软件环境，应提供获取方式，如网址、下载方法、下载哪个版本等信息。
 
+此学籍管理系统用python语言实现，设计的功能包括:
+\begin{itemize}
+    \item 学生分数的修改
+    \item 学生分数的查询
+    \item 学生个人信息的添加
+    \item 学生个人信息的删除
+    \item 年级成绩的排序
+    \item 年级成绩的图表
+    \item 管理系统密码的修改
+\end{itemize}
 
 \subsection{运行环境}
+\begin{itemize} 
+\item Anaconda Version 5.0.1 Python 3.6 
+\item Windows 10 64-bit operating system, x64-based processor
+\end{itemize}
 
 \subsection{环境搭建说明}
+% 说明建立运行环境的步骤。读者能按此建立起能运行该软件的环境，再现运行结果。安装方法、安装位置、顺序、配置参数等。
+
+\begin{enumerate}
+    \item 从https://www.anaconda.com/download/\#windows 安装Anaconda Python 3.6
+    \item 将src中'info.txt'和'学籍管理系统.py'复制到同一个文件夹目录下
+    \item 在该目录下用终端运行'学籍管理系统.py'
+    \item 学籍管理系统初始密码为'python'
+\end{enumerate}
 
 
-\section{软件使用说明}
+\subsection{软件使用说明}
+\textbf{软件内部的任何数据操作，包括增删修改信息，都会存储在内存中，当软件退出时自动保存。未正常退出时会丢失已进行的操作}\\
+% 如何运行本软件，使用注意事项，每步的输入和运行结果。这部分需要截图，反映软件功能。
+\text{初始界面:
+输入密码时不显示输入密码(import getpass)。
+密码输入错时，提示重新输入。
+密码正确,提示登陆成功,等待1秒后登陆。
+初始密码为'python'}
 
 \begin{center}
     \includegraphics[width = 4in]{src/屏幕截图(13).png}
 \end{center}
 
+\text{提示用户输入数字以选择所需的功能}
 
 \begin{center}
     \includegraphics[width = 4in]{src/屏幕截图(14).png}
 \end{center}
 
-
+\text{提示用户输入数字以选择展示成绩的方式}
 
 \begin{center}
     \includegraphics[width = 4in]{src/屏幕截图(15).png}
 \end{center}
 
-
+\text{升序显示学生成绩}
 \begin{center}
     \includegraphics[width = 4in]{src/屏幕截图(16).png}
 \end{center}
 
-
+\text{搜索学生姓名显示学生成绩：
+未搜索到学生姓名时，提示未搜索到，按任意键返回上一菜单。
+搜索到学生时，显示学生成绩。}
 \begin{center}
     \includegraphics[width = 4in]{src/屏幕截图(17).png}
 \end{center}
 
-
+\text{搜索学生学号显示学生成绩：
+未搜索到学生学号时，提示未搜索到，按任意键返回上一菜单。
+搜索到学生时，显示学生成绩。}
 \begin{center}
     \includegraphics[width = 4in]{src/屏幕截图(18).png}
 \end{center}
 
-
+\text{搜索学生姓名修改学生成绩：
+未搜索到学生姓名时，提示未搜索到，按任意键返回上一菜单。
+搜索到学生时，显示学生成绩，输入修改的成绩，并返回修改后的信息。}
 \begin{center}
     \includegraphics[width = 4in]{src/屏幕截图(19).png}
 \end{center}
-
-
 \begin{center}
     \includegraphics[width = 4in]{src/屏幕截图(20).png}
 \end{center}
 
+\text{添加学生姓名时先搜索学生信息：
+未搜索到学生姓名时，等待输入学生信息。
+搜索到学生时，显示学生已登记信息，按任意键返回上一菜单}
 
 \begin{center}
     \includegraphics[width = 4in]{src/屏幕截图(21).png}
 \end{center}
+
+\text{删除学生姓名时先搜索学生信息：
+未搜索到学生姓名时，提示未找到学生信息。
+搜索到学生时，确认是否删除。否：返回；是：删除信息，按任意键返回}
 
 
 \begin{center}
     \includegraphics[width = 4in]{src/屏幕截图(22).png}
 \end{center}
 
+\text{学生成绩分析：
+选择饼图和柱状图时，会生成图片，当关掉图片时自动返回上一个菜单。
+选择文字信息时，返回平均分，最高分和最低分。按任意键返回}
 
 \begin{center}
     \includegraphics[width = 4in]{src/屏幕截图(23).png}
@@ -89,21 +133,17 @@
     \includegraphics[width = 4in]{src/屏幕截图(26).png}
 \end{center}
 
-
+\text{修改学籍管理系统登陆密码}
 \begin{center}
     \includegraphics[width = 4in]{src/屏幕截图(27).png}
 \end{center}
 
-
+\text{展示上述操作后被删除和被增加的学生信息}
 \begin{center}
     \includegraphics[width = 4in]{src/屏幕截图(28).png}
 \end{center}
 
-
-
-
-
-
+\newpage
 \section{python源程序}
 \begin{python}
 import time
@@ -141,7 +181,7 @@ def showlist():
         opt == '4' or opt == '5' or opt == '6' or opt =='7':
             break
     opt = int(opt)
-
+#加载信息（info第一行为密码，剩余的为学生信息）
 def loadinfo():
     global info
     global key
@@ -155,7 +195,7 @@ def loadinfo():
             info.append(student(stu[0],stu[1],stu[2],int(stu[3])))
         except IndexError:
             pass
-
+#初始化
 def init():
     global info
     global key
@@ -173,7 +213,7 @@ def init():
         k = getpass('密码错误，重新输入:')
     print('登陆成功!')
     time.sleep(1)
-
+#查找学生信息
 def look():
     global info
     opt = 0
@@ -224,7 +264,7 @@ def look():
         for stu in info:
             stu.show()
         system('pause')
-
+#修改学生信息
 def revise():
     system('cls')
     global info
@@ -246,7 +286,7 @@ def revise():
     if flag == True:
         print('未找到该学生！')
     system('pause')
-
+#添加学生信息
 def add():
     system('cls')
     global info
@@ -267,7 +307,7 @@ def add():
     print('添加的学生成绩信息如下:')
     student(Name, Class, ID, Grade).show()
     system('pause')
-
+#删除学生信息
 def delete():
     system('cls')
     global info
@@ -291,7 +331,7 @@ def delete():
     print('未找到学生信息')
     system('pause')
     return
-
+#离开（保存文件）
 def leave():
     system('cls')
     print('------------------------')
@@ -305,7 +345,7 @@ def leave():
             ss = s.Name + '\t' + s.Class + '\t' + s.ID + '\t' + str(s.Grade) + '\n'
             file.write(ss)
     system('cls')
-
+#更改密码
 def change():
     global key
     system('cls')
@@ -322,7 +362,7 @@ def change():
     key = cert
     print('成功修改密码')
     system('pause')
-
+#学生成绩分析
 def analyse():
     global key
     system('cls')
@@ -410,10 +450,9 @@ if __name__ == '__main__':
 
 \end{python}
 
-
-
-
-
+\newpage
 \section{实验总结}
+
+通过这次python选修课程的大作业，我学会了用python语言进行程序设计，这次的大作业仅仅是这个课程所学内容的一个部分，主要是展示了python程序设计语言的基本使用语法，实现了python基于命令行的学籍管理系统。我觉得这门课的意义是引导与入门，在比较短的时间内让我们基本上掌握python这个工具，了解基本的库，学习使用方法，为我们将来的学习工作带来效率的提高。这次的实验不是基于算法设计的一个程序，更强调的是实现一个基本的业务逻辑，用来提高python的熟悉程度。通过这次实验，我感触最多的就是python的强大和便捷：仅仅一个晚上就能快速实现自己想要实现的东西，大大简化了操作的复杂度。同时，python强大的库函数也吸引着我去尝试用python解决学习生活中的问题。这次课程还引入了网络，多线程等内容，让我能更全面的接触python，使用python，爱上python。最后感谢任课老师地指导，让这一门选修课变得充实而有意义。
 
 \end{document}
