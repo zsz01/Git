@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>768</width>
+    <height>480</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>图形学实验</string>
+  </property>
+  <widget class="QWidget" name="centralWidget"/>
+  <widget class="QMenuBar" name="menuBar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>768</width>
+     <height>22</height>
+    </rect>
+   </property>
+   <widget class="QMenu" name="menu">
+    <property name="title">
+     <string>算法</string>
+    </property>
+    <addaction name="DDA"/>
+    <addaction name="Bresenham"/>
+    <addaction name="circle"/>
+    <addaction name="ellipse"/>
+   </widget>
+   <addaction name="menu"/>
+  </widget>
+  <action name="DDA">
+   <property name="text">
+    <string>DDA画线算法</string>
+   </property>
+  </action>
+  <action name="Bresenham">
+   <property name="text">
+    <string>Bresenham画线算法</string>
+   </property>
+  </action>
+  <action name="circle">
+   <property name="text">
+    <string>中点圆算法</string>
+   </property>
+  </action>
+  <action name="ellipse">
+   <property name="text">
+    <string>中点椭圆算法</string>
+   </property>
+  </action>
+  <action name="actionhaha">
+   <property name="text">
+    <string>haha</string>
+   </property>
+  </action>
+  <action name="actionasd">
+   <property name="text">
+    <string>asd</string>
+   </property>
+  </action>
+  <action name="actionAbout">
+   <property name="text">
+    <string>About</string>
+   </property>
+  </action>
+  <action name="actionAbout_2">
+   <property name="text">
+    <string>About</string>
+   </property>
+  </action>
+ </widget>
+ <layoutdefault spacing="6" margin="11"/>
+ <resources/>
+ <connections/>
+</ui>
