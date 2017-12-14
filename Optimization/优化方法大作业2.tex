@@ -1,0 +1,311 @@
+\documentclass[UTF8]{article}
+\pagestyle{plain}
+\usepackage{ctex,amsthm, amsmath, geometry, graphicx, enumerate, multirow,amssymb}
+\usepackage{listings}
+
+\title{ 优化方法基础大作业 }
+\author{姓名：张和永 / 班级：计算机54班 / 学号：2150500113}
+\date{\today}
+
+\begin{document}
+\maketitle
+\setcounter{tocdepth}{10}
+\tableofcontents
+\newpage
+
+
+\section{第一章\quad 凸集和凸函数}
+\subsection{优化问题的种类} 
+
+		\subsubsection{ 线性规划问题}
+	
+			\begin{displaymath}
+	\begin{aligned}
+			\min\quad & c_{1}x_{1}+c_{2}x_{2}+ \cdots +c_{n}x_{n}\\
+			s.t. \quad & a_{i1}x_{1}+a_{i2}x_{2}+ \cdots +c_{in}x_{n}\leq b_{i}\\
+				& x_{j} \geq 0(j = 1,2,\cdots,n)
+			\end{aligned}
+	\end{displaymath}
+			这里，目标函数和限制函数都为线性函数
+
+		\subsubsection{二次规划问题}
+		\begin{displaymath}
+	\begin{aligned}
+			\min\quad & \frac{1}{2} x^{T}Qx + c^{T}x\\
+			s.t. \quad & Ax = b \\
+				& x \geq 0
+			\end{aligned}
+	\end{displaymath}
+		这里, $Q \in \mathbb{R}^{n\times n}$为对称矩阵,矩阵$A\in \mathbb{R}^{n\times n},c,x \in \mathbb{R}^{n}$,$b \in \mathbb{R}^{m}$
+		\subsubsection{凸优化问题}
+	\begin{displaymath}
+	\begin{aligned}
+			\min\quad & f_{0}(x)\\
+			s.t. \quad & f_i{x} \leq b_{i}, i=1,2,\cdots,m \\
+			\end{aligned}
+	\end{displaymath}
+	这里，目标函数$f_{0}$和限制函数$f_{i},i=0,1,2,\cdots,m$都是定义在凸集上的凸函数
+	
+\subsection{凸集} 
+	
+		\subsubsection{凸集的定义}
+		\begin{enumerate}
+			\item 凸集\\ \quad 集合$C \subset R$称为凸集, 如果$\forall x, y \in C$及$\forall \theta \in [0, 1]$, 有$\theta x + (1 - \theta) y \in C.$
+			\item 凸集中任意两点的连线仍在该集合中.
+			\item 凸组合\\ \quad  $\theta x + (1 - \theta) y$是点$x$和点$y$的凸组合. 推广到多个点$x_1, x_2, \cdots, x_k \in C$的凸组合为$$\{z : z = \lambda_1 x_1 + \lambda_2 x_2 + \cdots + \lambda_k x_k, \forall \lambda_1, \lambda_2, \cdots, \lambda_k \geq 0, \lambda_1 + \lambda_2 + \cdots + \lambda_k = 1 (k \geq 2)\}.$$
+		\end{enumerate}
+		\subsubsection{凸集的判断}
+		\begin{itemize}
+			\item 根据定义: $x_1, x_2 \in C, 0 \leq \theta \leq 1 \Longrightarrow \theta x + (1 - \theta) y \in C.$
+		\end{itemize}
+		\subsubsection{凸集的性质}
+		\begin{enumerate}
+			\item 集合的交运算\\ \quad  令$\{C_i : i \in I\}$是凸集的集合, 那么$\cap_{i \in I} C_i$是凸集.
+			\item 集合的和运算\\ \quad  令$C_1, C_2$为凸集合, 则$\{x_1 + x_2 : x_1 \in C_1, x_2 \in C_2\}$是凸集.
+			\item 仿射函数保凸集\\ \quad 仿射函数$f(x) = A x + b, A \in R^{m \times n}, b \in R^{m}$.
+			$$S \subseteq R^{n}\text{是凸集} \quad\Longrightarrow\quad f(S) = \{f(x) : x \in S\}\text{和}f^{-1}(S) = \{x \in R^{n} : f(x) \in S\}\text{是凸集}.$$ 
+		\end{enumerate}
+
+
+	
+\subsection{凸函数}
+	
+		\subsubsection{凸函数，凹函数，严格凸函数，严格凹函数的定义}
+		令集合$C \subseteq R^n$是一凸集。$\forall x, y \in C, \forall \lambda \in [0, 1]$, 函数$f : C \rightarrow R$
+		\begin{enumerate}
+			\item 如果$f$满足$f(\lambda x + (1 - \lambda)y) \leq \lambda f(x) + (1 - \lambda)f(y)$的条件则$f$为凸函数, 
+			\item 如果$f$满足$f(\lambda x + (1 - \lambda)y) \geq \lambda f(x) + (1 - \lambda)f(y)$的条件则$f$为凹函数, 
+			\item 如果$f$满足$f(\lambda x + (1 - \lambda)y) < \lambda f(x) + (1 - \lambda)f(y)$的条件则$f$为严格凸函数, 
+			\item 如果$f$满足$f(\lambda x + (1 - \lambda)y) > \lambda f(x) + (1 - \lambda)f(y)$的条件则$f$为严格凹函数.
+		\end{enumerate}
+		\subsubsection{凸函数的判定方法}
+		\begin{enumerate}
+			\item 根据定义\\ \quad 
+			$f(\lambda x + (1 - \lambda)y) \leq \lambda f(x) + (1 - \lambda)f(y)$
+			\item 凸函数的一阶判定\\ \quad  
+			$C \in R^n$为凸集且函数$f : C \rightarrow R$在集合$C$上可微，那么
+			\begin{enumerate}
+				\item 函数$f$是凸函数当且仅当$\forall x, y \in C$, 有$f(y) \geq f(x) + \nabla^T f(x)(y - x)$
+				\item 如果$\forall x, y \in C$且$x \neq y$, $f(y) > f(x) + \nabla^T f(x)(y - x)$, 那么函数$f$是严格凸函数.
+			\end{enumerate}
+			\item 凸函数的二阶判定\\ \quad 
+			$C \in R^n$为凸集且函数$f:C \rightarrow R$在集合$C$上二阶连续可微，那么
+			\begin{enumerate}
+				\item 函数$f$是凸函数当且仅当$\forall x \in C$, $\nabla^2 f(x)$为对称半正定矩阵.
+				\item 如果$\forall x \in C$, $\nabla^2 f(x)$为对称正定矩阵, 那么函数$f$是严格凸函数.
+			\end{enumerate}
+			\item 保凸函数运算
+		\end{enumerate}
+		\subsubsection{凸函数的性质}
+\section{第二章\quad 对偶与最优性条件}
+
+\subsection{原问题与对偶问题概念的引入}
+	
+		\subsubsection{原函数，对偶函数，拉格朗日函数的定义}
+			\begin{enumerate}
+				\item 强对偶:对于任意的函数$f,g$和集合$X$,下式成立
+				\[\min\limits _{x\in X} \max\limits_{y\geq 0}L(x,y) = \max\limits_{y\geq0}\min\limits_{x\in X}L(x,y)\]
+				\item 弱对偶:对于任意的函数$f,g$和集合$X$,下式成立
+				\[\min\limits _{x\in X} \max\limits_{y\geq 0}L(x,y) \geq\max\limits_{y\geq0}\min\limits_{x\in X}L(x,y)\]
+				\item 原可行解集:\\
+				\[ X_{P} = \{x:x\in X,g_{i}(x)\leq 0,i=1,2,\cdots,m\}\]
+				\item 对偶可行解集:\\
+				\[Y_{D} = \{(x,y) \in \mathbb{R}^{m \times n}:x \in X,y\in Y,L_{D}(y)^{*} = \max\limits_{y \geq 0}L_{D}(y)\}\]
+			\end{enumerate}
+		\subsubsection{对偶和凸性}
+		\subsubsection{对偶间隙的几何解释}
+	\begin{center}
+		\includegraphics[width=3in]{00.PNG}
+		\end{center}
+	
+	\begin{displaymath}
+	\begin{aligned}
+	 L_D(y) & =   \min\limits_{x\in X} f(x)+yg(x)\\
+	& =\min\limits_{ f \in h} f+ yg
+	\end{aligned} 
+	\end{displaymath}
+	
+\subsection{KKT方程}
+\begin{enumerate}
+	\item 假设: 原问题与对偶问题的最优解都达到并且相等(即对偶间隙为0), 且$x^*$是原问题的最优解, $(y^*, u^*)$为对偶问题最优解.
+	\item KKT方程:
+	\begin{displaymath}
+	\begin{aligned}
+		g_i(x^*)\leq 0,&\quad i=1,2,\cdots,m \\
+		y_i^* g_i(x^*) = 0,&\quad i=1,2,\cdots,m \\
+		y_i^* \geq 0,&\quad i=1,2,\cdots,m \\
+		\nabla f(x^*)+\sum\limits_{i=1}^m y_i^* \nabla g_i(x^*&) + \sum\limits_{i=1}^k u_i^* \nabla h_i(x^*)=0
+	\end{aligned}
+	\end{displaymath}
+	\item 定理: 对于凸优化问题, 若$\tilde{x},\tilde{y},\tilde{u}$是任意满足KKT条件的点, 则$\tilde{x},(\tilde{y},\tilde{u})$分别是原问题和对偶问题的最优解, 对偶间隙为$0$.
+\end{enumerate}
+		
+\subsection{拉格朗日对偶函数和共轭函数}
+\begin{enumerate}
+	\item 共轭函数: $f^*(y)=\sup\limits_{x\in dom\ f}(y^T x-f(x))$
+	\item 优化问题: $\min\limits_x\ f(x),\ s.t.\ Ax\leq b,\ Cx=d$
+	\item 对偶函数: $L_D(y,u)=-b^T y-d^T u-f^* (-A^T y-C^T u)$
+	\item 对偶函数的定义域: $dom\ L_D=\{(y,u):-A^T y-C^T u\in dom\ f^*\}$
+\end{enumerate}
+\subsection{强弱对偶性的极大极小描述}
+\begin{itemize}
+\item 极大极小不等式:对于任意函数$f:\mathbb{R}^n\times \mathbb{R}^n \rightarrow \mathbb{R}以及任意的W\subseteq \mathbb{R}^n 和Z \in \mathbb{R}^n,有$
+\[\sup\limits_{z\in Z}\inf\limits_{w \in W}f(w,z) \leq \inf\limits_{w \in W}\sup\limits_{z\in Z}f(w,z)\]\\
+由强凸性假设可得:\\
+\[f(y) \geq f(x)+ \nabla f(x)^T(y-x) + \frac{m}{2}\lVert y-x \rVert_2^2 \]
+\end{itemize}
+
+\section{第三章\quad 无约束优化问题}
+
+\subsection{强凸性及其含义	}
+	\paragraph{强凸性假设} 假设:目标函数$f$在$S$上是强凸的,即存在$m > 0$使得$\forall x\in S,有$ \[ \nabla_2f(x)\geq mI\]
+\subsection{基本求解方法}
+	
+		\paragraph{精确直线搜索}
+		步长$t$通过沿着射线$\{x+\Delta x:t\geq 0\}$优化目标函数$f$确定$t=\arg\min\limits_{s\geq 0}f(x+sd)$, 如果解此单变量优化问题的计算成本小于计算搜索方向的成本时, 适合进行精确直线搜索\\
+	\\$ \quad \quad$ 迭代次数的上界为:
+		\begin{displaymath}
+		K \geq \frac{\log( \frac{f(x^0)-p^*}{\epsilon})}{\log(1-\frac{m}{M})} 
+		\end{displaymath}
+		
+		\paragraph{回溯直线搜索}
+		\begin{enumerate}
+	\item 给定$f$在$x\in dom\ f$处的下降方向$d^k$, 参数$0<\alpha <0.5, 0<\beta <1$
+	\item t = 1
+	\item while $f(x+td^k)>f(x)+\alpha t \nabla f(x)^T d^k$, $t:=\beta t$
+\end{enumerate}
+$\quad \quad$ 迭代次数的上界为:
+\begin{displaymath}
+		K \geq \frac{\log( \frac{f(x^0)-p^*}{\epsilon})}{\log(1-\min\{2m\alpha,\frac{4m\alpha(1-\alpha)\beta}{M}\}\alpha)} 
+		\end{displaymath}
+
+		 
+		\paragraph{梯度下降方向}
+		\begin{itemize}
+		\item 梯度方向: $d^k = - \nabla f(x^k)$
+		\end{itemize}
+		\paragraph{最速下降方法}
+		\begin{enumerate}
+	\item 规范化的最速下降方法: 一个能使$f$的线性近似下降最多的具有单位范数的步径. $$d_{nsd}^k = \arg\min\{\nabla f(x^k)^T d:\lVert d \rVert = 1\}$$
+	\item 非规范化的最速下降方法: 将规范化最速下降方向乘以一个特殊的比例因子$\lVert \nabla f(x^k)\rVert_*$, 即$$d_{sd}^k = \lVert \nabla f(x^k)\rVert_* \times \arg\min\{\nabla f(x^k)^T d:\lVert d \rVert = 1\}$$
+\end{enumerate}
+
+		\paragraph{牛顿方向}
+\begin{enumerate}
+	\item 牛顿方向: $d_{nt}^k = -\nabla^2 f(x^k)^{-1} \nabla f(x^k)$, 这里$\nabla^2 f(x^k) \in S^n_{++}, \nabla f(x^k)\neq 0$
+	\item 牛顿减少量: $\sigma(x) = (\nabla f(x)^T \nabla^2 f(x)^{-1} \nabla f(x))^{\frac{1}{2}}$
+	\item 静止准则: $\frac{1}{2}\sigma(x^k)^2\leq \epsilon$
+	\item 阻尼过程, 二次收敛过程.
+	
+\end{enumerate}
+	
+
+
+\section{第四章\quad 等式约束优化问题}
+\subsection{消除等式约束}
+	
+		\subsubsection{消除矩阵}
+		消除等式转换为等价的无约束问题.
+\begin{enumerate}
+	\item 消除矩阵: $F\in R^{n\times (n-p)}$为$A$的零空间$N(A)=\{x|Ax=0\}$的基矩阵, 则
+	$$rank(F)=n-p$$
+	$$\{x|Ax=0\}=\{Fz|z\in R^{n-p}\}$$
+	\item 参数化(仿射)可行集: 假设存在$\hat{x}\in dom\ f$, 满足$A\hat{x}=b$.
+	\item 消除等式约束后的优化问题: $$\min\limits_{z\in R^{n-p}} \tilde{f}(z)=f(Fz+\hat{x})\quad\Leftrightarrow\quad min\{f(x)|s.t.\ Ax=b\}$$ 
+	\item 最优解$z^*$确定等式约束问题的最优解$x^*=Fz^*+\hat{x}$
+\end{enumerate}
+		\subsubsection{对偶方法} 
+		利用无约束优化方法求解对偶问题(假设对偶函数是二次可微的), 然后从对偶问题中复原等式约束优化问题的解.
+\begin{enumerate}
+	\item 先求解等式约束问题的对偶问题, 然后复原最优的原变量.
+	\begin{enumerate}
+		\item 对偶函数: $g(v)=-b^T v-f^*(-A^T v)$
+		\item 对偶问题: $max\ -b^T v-f^*(-A^T v)$
+	\end{enumerate}
+	\item 强对偶性成立, 即存在$v^*$满足$g(v^*)=p^*$, 再求解无约束最优化问题$$\min\limits_{x}\ f(x)+(v^*)^T(Ax-b)\quad\Leftrightarrow\quad\nabla f(x)+A^T v^* = 0$$
+\end{enumerate}
+		\subsubsection{牛顿方法}
+	在已知$Ax=b$的一个解的情况下, 将等式约束变成无约束优化问题, 并采用牛顿方法求解, 等价于解下述线性方程组(其中$x$给定)确定搜索方向然后对原函数进行搜索.
+	$$
+	\begin{bmatrix}
+		\nabla^2_x f(x) & A^T \\ 
+		A & 0 
+	\end{bmatrix}
+	\begin{bmatrix}
+		d_x \\
+		v
+	\end{bmatrix}
+	=
+	\begin{bmatrix}
+		-\nabla_x f(x) \\
+		0
+	\end{bmatrix}
+	$$
+	
+
+
+\section{第五章\quad 等式不等式约束优化问题}
+
+\subsection{KKT方程}
+求解等式不等式约束的凸优化问题等价于确定以下KKT方程的解.
+\begin{displaymath}
+\text{KKT方程}\begin{cases}
+&Ax^*=b,\ g(x^*)\leq 0\\
+&y^*\geq 0,\ (y^*)^T \nabla g(x^*) + A^T v^* = 0 \\
+&\nabla f(x^*)+(y^*)^T\nabla g(x^*)+A^T v^* = 0 
+\end{cases}
+\end{displaymath}
+\subsection{对数障碍函数和中心路径}
+
+\begin{enumerate}
+	\item 将等式不等式约束凸优化问题转化为等式约束凸优化问题.
+	\item 示性函数$I_u=\begin{cases}
+	0&\quad u\leq 0\\
+	\infty&\quad u>0
+	\end{cases}$
+	\item 近似示性函数: $\hat{I}_u=-\frac{1}{t}log(-u)$
+	\item 对数障碍函数: $\phi(x)=-\sum\limits_{i=1}^m log(-g_i(x))$
+	\item 问题转化为
+	$$min\ tf(x)+\phi(x)$$
+	$$s.t.\ Ax=b$$
+\end{enumerate}
+\subsection{中心路径}
+\begin{enumerate}
+	\item 假定: $\forall t > 0$, 能用牛顿方法求解, 且存在唯一解.
+	\item 中心点: $x^*(t),\ t>0$为优化问题的解.
+	\item 中心路径: $\{x^*(t),t>0\}$, 其中$x^*(t)$满足: 
+		\begin{enumerate}
+			\item 满足定义域: $Ax^*(t)=b, g(x^*(t))<0$
+			\item 存在$\hat{v}\in R^p]$, 使得$$t\nabla f(x^*(t))+\sum\limits_{i=1}^m \frac{1}{-g_i(x^*(t))} \nabla g_i(x^*(t))+A^T \hat{v}$$
+		\end{enumerate}
+	\item 每个中心点产生对偶可行解.
+	\item $x^*(t)$和对偶可行解$y_i^*(t), v^*(T)$之间的对偶间隙是$\frac{m}{t}$, 则$f(x^*(t))-p^*\leq \frac{m}{t}$, 即$x^*(t)$是和最优值$p^*$偏差在$\frac{m}{t}$之内的次优解.
+\end{enumerate}
+
+\subsection{无约束极小化方法}
+取$t=\frac{m}{\epsilon}$, $\epsilon$为预定精度, 牛顿方法求解等式约束问题:
+$$min\ \frac{m}{\epsilon}f(x)+\phi(x)$$
+$$s.t.\ Ax=b$$
+\subsection{障碍方法}
+给定严格初始可行点$x$, $t=t^0>0,\mu>1$, 误差阈值$\epsilon>0$, 令$k=0$
+\begin{enumerate}
+	\item 中心点步骤: 从$x$出发, 求解$$x^*(t)=\arg\min\ tf(x)+\phi(x)\quad s.t.\ Ax=b$$
+	\item 更新: $x:=x^*(t)$
+	\item 停止准则: 若$\frac{m}{t}\leq \epsilon$, 退出.
+	\item 增加$t:=\mu t$, 回到步骤1.
+\end{enumerate} 
+
+
+
+
+
+\end{document}
+
+
+
+
+
+
+
+
+

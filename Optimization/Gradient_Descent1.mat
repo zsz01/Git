@@ -1,0 +1,48 @@
+syms x y;
+v = [x;y];
+f = exp(x+3*y-0.1)+exp(x-3*y-0.1)+exp(-x-0.1);%原函数
+grad=jacobian(f,v);%梯度函数
+alpha = 0;
+beta = 0;
+while beta < 0.8
+	beta = beta + 0.2;
+	while alpha < 0.4
+		alpha = alpha + 0.1;
+		cnt = 0;%计数
+		cur = [20;20];%当前点
+		cur_val = double(subs(f,v,cur));
+		cur_grad = double(subs(grad,v,cur))';
+		temp = norm(cur_grad);
+		vec_val=[];
+		vec_cnt=[];
+		while temp > 10^(-2)
+			step = 1;
+			next = cur - step * cur_grad;
+			cur_val = double(subs(f,v,cur));
+			next_val = double(subs(f,v,next));
+			vec_val = [vec_val cur_val];
+			vec_cnt = [vec_cnt cnt];
+			del = - alpha * (cur_grad' * cur_grad);
+			del_temp = step * del;
+			while next_val > cur_val + del_temp
+				step = step * beta;
+				next = cur - step * cur_grad;
+				next_val = double(subs(f,v,next));
+				del_temp = step * del;
+			end
+			cnt = cnt + 1;
+			cur = next;
+			cur_grad = double(subs(grad,v,cur))';
+			temp = norm(cur_grad);
+		end
+		fprintf('a为%.1f,b为%.1f,迭代%d次,
+		val=%f\n',alpha,beta,cnt,cur_val)      
+		figure
+		semilogy(vec_cnt,vec_val-cur_val,'k-')
+		axis normal
+		title(['a=',num2str(alpha),',b=',num2str(beta)])       
+		xlabel('cnt') 
+		ylabel('del')
+	end
+	alpha = 0;
+end

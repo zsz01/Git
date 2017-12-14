@@ -1,0 +1,148 @@
+\documentclass[UTF8]{article}
+\pagestyle{plain}
+\usepackage{ctex,xcolor,amsthm, amsmath, geometry, graphicx, enumerate, multirow,amssymb}
+\usepackage{listings}
+
+\title{ \emph{电子技术实验报告}\\---电梯控制器的设计与分析}
+\author{姓名：张和永 \\班级：计算机54班 \\ 学号：2150500113}
+\date{\today}
+
+\begin{document}
+\maketitle
+\setcounter{tocdepth}{10}
+\tableofcontents
+\newpage
+
+\section{实验目的}
+电子技术专题实验是对“数字逻辑”课程内容的全面、系统的总结、巩固和提高的一项课程实践活动。
+根据数字逻辑的特点，选择相应的题目，在老师的指导下，由学生独立完成。目的是通过实验使学生
+掌握数字逻辑电路设计的基本方法和技巧，正确运用QuartusⅡ软件及实验室多功能学习机硬件平台，
+完成所选题目的设计任务，并掌握数字逻辑电路测试的基本方法，训练学生的动手能力和思维方法。
+通过实验，一方面提高运用数字逻辑电路解决实际问题的能力，另一方面使学生更深入的理解所学知识，
+为以后的计算机硬件课程的学习奠定良好的基础。
+
+\section{项目设计概要}
+
+\subsection{设计实现的目标}
+  随着社会的发展，电梯的使用越来越普遍，已从原来只在商业大厦、宾馆使用，过渡到在办公楼、居民楼等场所使用，
+  并且对电梯功能的要求也不断提高，相应地其控制方式也在不停地发生变化。对于电梯的控制，传统的方法是使用
+  继电器—接触器控制系统进行控制，随着技术的不断发展，微型计算机在电梯控制上的应用日益广泛，现在已进入全微机化控制的时代。
+
+\subsection{整体设计概述}
+电梯的微机化控制主要有以下几种形式：
+\begin{enumerate}
+\item PLC控制
+\item 单板机控制
+\item 单片机控制
+\item 单微机控制
+\item 多微机控制
+\item 人工智能控制
+\end{enumerate}
+随着EDA技术的快速发展，CPLD/FPGA已广泛应用于电子设计与控制的各个方面。
+本设计就是使用一片CPLD/FPGA来实现对电梯的控制的.
+
+\subsection{项目设计特点}
+我们在项目设计过程中采用模块化设计思想，事先制定了模块间的接口方案，
+使得整个系统的组合变得十分灵活。由于我们在设计时为电子钟和秒表模块中都加入了显示电路，
+总控模块可分别与之连接组成一个分系统，便于调试。在最终整合时，
+我们也只需要将两个模块中的显示电路合二为一即可。
+
+
+\section{系统设计方案}
+系统工作用2 Hz基准时钟信号CLKIN，楼层上升请求键UPIN，楼层下降请求键DOWNIN，
+楼层选择键入键ST\_CH，提前关门输入键CLOSE，延迟关门输入键DELAY，电梯运行的开关键RUN\_STOP，
+电梯运行或停止指示键LAMP，电梯运行或等待时间指示键RUN\_WAIT，电梯所在楼层指示数码管ST\_OUT，
+楼层选择指示数码管DIRECT。楼层选择键入键ST\_CH，提前关门输入键CLOSE，延迟关门输入键DELAY，
+电梯运行的开关键RUN\_STOP，电梯运行或停止指示键LAMP，电梯运行或等待时间指示键RUN\_WAIT，
+电梯所在楼层指示数码管ST\_OUT，楼层选择指示数码管DIRECT。
+\subsection{输入端口}
+\begin{enumerate}
+\item CLKIN:基准时钟信号，为系统提供2Hz的时钟脉冲，上升沿有效；
+\item UPIN:电梯上升请求键。由用户向电梯控制器发出上升请求。高电平有效；
+\item DOWNIN:电梯下降请求键，由用户向电梯控制器发出下降请求。高电平有效；
+\item ST\_CH[2..0]:楼层选择键入键，结合DIRECT完成楼层选择的键入，高电平有效；
+\item CLOSE:提前关门输入键。可实现无等待时间的提前关门操作，高电平有效；
+\item DELAY:	延迟关门输入键。可实现有等待时间的延迟关门操作，高电平有效；
+\item RUN\_STOP:电梯运行或停止开关键。可实现由管理员控制电梯的运行或停止，高电平有效。
+\end{enumerate}
+\subsection{输出端口}
+\begin{enumerate}
+\item LAMP:电梯运行或等待指示键，指示电梯的运行或等待状况。高电平有效；
+\item RUN\_WAIT:电梯运行或等待时间指示键，指示电梯运行状况或等待时间的长短，高电平有效；
+\item ST\_OUT:电梯所在楼层指示数码管，只是电梯当前所在的楼层数。即1~5层，高电平有效；
+\item DIRECT:楼层选择指示数码管，指示用户所要选择的楼层数，高电平有效。
+\end{enumerate}
+\subsection{系统功能模块设计示意图}
+\begin{center}
+    \includegraphics[width=4in]{系统功能模块设计示意图.png}
+\end{center}
+
+\subsection{项目分块及其实现方案}
+电梯的控制状态包括运行状态、停止状态及等待状态，其中运行状态又包含向上状态和向下状态。
+主要动作有开、关门，停靠和启动。乘客可通过键入开、关门按钮，呼唤按钮，指定楼层按钮等来控制电梯的行与停。
+据此，整个电梯控制器DTKZQ应包括如下几个组成部分：
+\begin{enumerate}
+\item 时序输出及楼选计数器
+\item 电梯服务请求处理器
+\item 电梯升降控制器
+\item 上升及下降寄存器
+\item 电梯次态生成器
+\end{enumerate}
+
+该电梯控制器设计的关键是确定上升及下降寄存器的置位与复位。整个系统的内部组成结构图如图2所示
+\begin{center}
+    \includegraphics[width = 4in]{电梯控制器的内部组成结构图.png}
+\end{center}
+
+\section{VHDL源程序}
+
+\lstset{%
+alsolanguage=VHDL,
+tabsize=4, 
+  frame=shadowbox, %把代码用带有阴影的框圈起来
+  commentstyle=\color{red!50!green!50!blue!50},%浅灰色的注释
+  rulesepcolor=\color{red!20!green!20!blue!20},%代码块边框为淡青色
+  keywordstyle=\color{blue!90}\bfseries, %代码关键字的颜色为蓝色，粗体
+  showstringspaces=false,%不显示代码字符串中间的空格标记
+  stringstyle=\ttfamily, % 代码字符串的特殊格式
+  keepspaces=true, %
+  breakindent=22pt, %
+  numbers=left,%左侧显示行号 往左靠,还可以为right，或none，即不加行号
+  stepnumber=1,%若设置为2，则显示行号为1,3,5，即stepnumber为公差,默认stepnumber=1
+  %numberstyle=\tiny, %行号字体用小号
+  numberstyle={\color[RGB]{0,192,192}\tiny} ,%设置行号的大小，大小有tiny,scriptsize,footnotesize,small,normalsize,large等
+  numbersep=8pt,  %设置行号与代码的距离，默认是5pt
+  basicstyle=\footnotesize, % 这句设置代码的大小
+  showspaces=false, %
+  flexiblecolumns=true, %
+  breaklines=true, %对过长的代码自动换行
+  breakautoindent=true,%
+  breakindent=4em, %
+  escapebegin=\begin{CJK*}{GBK}{hei},escapeend=\end{CJK*},
+  aboveskip=1em, %代码块边框
+  tabsize=2,
+  showstringspaces=false, %不显示字符串中的空格
+  backgroundcolor=\color[RGB]{245,245,244}   %代码背景色
+}
+
+\lstinputlisting{DTKZQ.VHDL}
+
+
+\section{系统仿真}
+\subsection{模拟仿真测试波形图}
+\begin{center}
+    \includegraphics{系统仿真.png}
+\end{center}
+
+\subsection{DTKZQ器件图}
+\begin{center}
+    \includegraphics{DTKZQ器件图.png}
+\end{center}
+
+\section{项目总结}
+通过本次课程设计进一步熟悉Quartus II软件的使用和操作方法，以及硬件实现时的下载方法与运行方法；
+对Verilog HDL语言的自顶向下设计方法有了进一步的认识，对其中的许多语句也有了新了解，掌握；
+在课程设计的过程中和小组成员充分地讨论与合作，提高了自身的程序设计能力与沟通交际能力；也充分了解了一个
+项目从始至终的设计流程，深有感触。最后，十分有幸能参加到这次的设计课程，它使我受益匪浅。
+
+\end{document}
