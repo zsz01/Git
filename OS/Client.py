@@ -2,8 +2,8 @@ import socket
 
 def chatClient():
     s = socket.socket()
-    host = socket.gethostname()
-    port = 5458
+    host = '118.126.115.149'
+    port = 80
 
     s.connect((host, port))
     msg = s.recv(1024).decode('utf-8')
